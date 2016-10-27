@@ -3,10 +3,7 @@ import React, {Component} from 'react';
 class Todo extends Component {
   constructor(props) {
     super(props)
-    this.state = {value: "", list: ['1','2','3']}
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleRemove = this.handleRemove.bind(this)
+    this.state = {value: '', list: [{id:0, text:'hello'}]}
   }
 
   handleChange(event) {
@@ -14,18 +11,17 @@ class Todo extends Component {
   }
 
   handleSubmit(event) {
-    this.setState(prevState => {
-      list: this.state.list.push(this.state.value)
-    })
+    let list = this.state.list.slice();
+    list.push(
+      {id: this.state.list.length, text: this.state.value}
+    )
+    this.setState({list: list})
     this.setState({value: ''})
   }
 
-  handleRemove(event) {
-    let item = event.target.getAttribute('data-item')
+  handleRemove(index) {
     let list = this.state.list.slice();
-    if(list.includes(item)) {
-      list.splice(list.indexOf(item), 1);
-    }
+    list.splice(index, 1);
     this.setState({list: list})
   }
 
@@ -36,27 +32,28 @@ class Todo extends Component {
           placeholder="newItem"
           value={this.state.value}
 
-          onChange={this.handleChange} />
+          onChange={this.handleChange.bind(this)} />
 
-          <button onClick={this.handleSubmit}>
+          <button onClick={this.handleSubmit.bind(this)}>
             Submit
           </button>
 
           <div className="todoListArea">
-            <TodoList list={this.state.list} onRemove={this.handleRemove}/>
+            <TodoList
+              list={this.state.list}
+              onRemove={this.handleRemove.bind(this)}>
+            </TodoList>
           </div>
         </div>
     );
   }
 }
 
-function TodoList(props) {
-  const items = props.list
-  const handleRemove = props.onRemove
-  const listItems = items.map((item) => (
-    <li key={item.toString()}>
-      {item}
-      <button onClick={handleRemove} data-item={item}>X</button>
+function TodoList({list, onRemove}) {
+  const listItems = list.map((item, index) => (
+    <li key={item.id}>
+      {item.text}
+      <button onClick={() => onRemove(index)}>X</button>
     </li>
   ))
 

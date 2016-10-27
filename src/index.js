@@ -6,12 +6,14 @@ import ReactDOM from 'react-dom';
 // import LoginControl from './LoginControl';
 // import WarningBanner from './WarningBanner';
 // import Form from './Form';
-import Todo from './Todo';
+// import Todo from './Todo';
 // import Calculator from './Calculator';
+// import CustomTextInput from './CustomTextInput';
+import CounterButton from './CounterButton';
 import './index.css';
 
 
-ReactDOM.render(<Todo />, document.getElementById('root'));
+ReactDOM.render(<CounterButton color='red' />, document.getElementById('root'));
 
 
 // function Blog(props) {
